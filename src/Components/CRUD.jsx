@@ -13,11 +13,20 @@ const CRUD = () => {
   const [info, setInfo] = useState([]);
   const userRef = collection(db, "Users");
 
+  const fetchUsers = async () => {
+    const data = await getDocs(userRef);
+    // setInfo(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+
+    const userData = [];
+
+    data.forEach((doc) => {
+      userData.push(doc.data());
+    });
+
+    setInfo(userData);
+  };
+
   useEffect(() => {
-    const fetchUsers = async () => {
-      const data = await getDocs(userRef);
-      setInfo(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
     fetchUsers();
   }, [userRef]);
 
@@ -45,8 +54,8 @@ const CRUD = () => {
   };
 
   return (
-    <div className={"Container"}>
-      <div className={"Field"}>
+    <div className="Container">
+      <div className="Field">
         <input
           placeholder="Name"
           onChange={(event) => {
@@ -71,7 +80,7 @@ const CRUD = () => {
         ></input>
         <button onClick={createUser}>Create user</button>
       </div>
-      <div className={"Data"}>
+      <div className="Data">
         {info.map((user) => {
           return (
             <div className={"User"}>
@@ -84,7 +93,6 @@ const CRUD = () => {
                   updateUser(user.id, user.Age);
                 }}
               >
-                {" "}
                 Increase Age
               </button>
               <button
@@ -92,7 +100,6 @@ const CRUD = () => {
                   deleteUser(user.id);
                 }}
               >
-                {" "}
                 Delete User
               </button>
             </div>
