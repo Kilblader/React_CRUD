@@ -20,7 +20,7 @@ const CRUD = () => {
     const userData = [];
 
     data.forEach((doc) => {
-      userData.push(doc.data());
+      userData.push({ ...doc.data(), id: doc.id });
     });
 
     setInfo(userData);
@@ -28,7 +28,7 @@ const CRUD = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [userRef]);
+  }, []);
 
   const [newName, setNewName] = useState(" ");
   const [newEmail, setNewEmail] = useState(" ");
@@ -82,6 +82,7 @@ const CRUD = () => {
       </div>
       <div className="Data">
         {info.map((user) => {
+          console.log(user);
           return (
             <div className={"User"}>
               {" "}
